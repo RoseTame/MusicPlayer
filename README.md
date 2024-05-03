@@ -14,7 +14,18 @@
 
 ◼ 只需完成的功能：播放/暂停、上一首、下一首(自动下一首)、单曲循环、播放列表选择
 
-### 二、 Prepare
+**项目地址：** https://github.com/RoseTame/MusicPlayer 
 
+### 二、 界面展示
 
+<img src="https://gitee.com/RoseTame/pic/raw/master/blog/202405031555785.png" width="30%">
 
+> 1. ActionBar
+> 2. Imageview表示歌曲图片
+> 3. 3个TextView表示歌名、歌手名和歌词，其中歌名会随着歌曲变化而变化
+> 4. 6个ImageButton（不实现功能），5个ImageButton（实现功能）
+> 5. Seekbar+TextView表示歌曲进度
+
+### 三、Prepare
+
+#### 1. 新建项目MusicPlayer
