@@ -58,7 +58,7 @@ https://github.com/RoseTame/MusicPlayer
 
 ##### 2.2 下载界面所需图标
 
-**下载地址：**https://github.com/RoseTame/MusicPlayer/tree/main/app/src/main/res/drawable
+**下载地址：** https://github.com/RoseTame/MusicPlayer/tree/main/app/src/main/res/drawable
 
 > 下载后将所有图片复制到drawable文件夹里
 
@@ -227,8 +227,7 @@ AdapterView.OnItemClickListener listener2 = new AdapterView.OnItemClickListener(
     }
 };
 ```
-
-       #####  3.4 playMusic
+#####  3.4 playMusic
 
 > 1. 开始计时（联合后续的seekBar）
 > 2. 调用MusicService中的playMusic(String)播放音乐
