@@ -25,26 +25,7 @@ public class MusicService extends Service {
     boolean prepared = false;
 
 
-    public void seekTo(long position) {
-        if (player != null) {
-            player.seekTo(position);
-        }
-    }
-    // 获取当前播放进度
-    public long getContentPosition() {
-        if (player != null) {
-            return  player.getCurrentPosition();
-        }
-        return 0;
-    }
 
-    // 获取歌曲总时长
-    public long getDuration() {
-        if (player != null) {
-            return player.getDuration();
-        }
-        return 0;
-    }
     public void init() {
         if (player == null) {
             player = new ExoPlayer.Builder(MusicService.this).build(); // 创建播放器
@@ -121,6 +102,27 @@ public class MusicService extends Service {
         }
         player.seekToDefaultPosition(currentTrackIndex);
         player.play();
+    }
+
+    public void seekTo(long position) {
+        if (player != null) {
+            player.seekTo(position);
+        }
+    }
+    // 获取当前播放进度
+    public long getContentPosition() {
+        if (player != null) {
+            return  player.getCurrentPosition();
+        }
+        return 0;
+    }
+
+    // 获取歌曲总时长
+    public long getDuration() {
+        if (player != null) {
+            return player.getDuration();
+        }
+        return 0;
     }
 
     // 获取当前正在播放的歌曲名

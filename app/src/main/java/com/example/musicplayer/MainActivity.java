@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public String format(long position) {
         SimpleDateFormat sdf = new SimpleDateFormat("mm:ss"); // "分:秒"格式
         String timeStr = sdf.format(position); //会自动将时长(毫秒数)转换为分秒格式
@@ -120,6 +119,61 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    // ListView 显示音乐列表 start
+    public void showListView() {
+        music_list = getMusic(); // 获取音乐列表
+        adpter = new ArrayAdapter<String>( // 创建适配器
+                MainActivity.this,
+                android.R.layout.simple_list_item_single_choice,
+                music_list
+        );
+        listView.setAdapter(adpter); // 设置适配器
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); // 设置选择模式
+
+        listView.setOnItemClickListener(listener2); // 设置监听器
+        listView.setVisibility(View.VISIBLE); // 设置可见
+    }
+
+    List<String> getMusic() {
+        List<String> mList = new ArrayList<>();
+        try {
+            String[] fNames = getAssets().list("music");
+            for (String fn : fNames) {
+                mList.add(fn);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        mList.add("返回");
+        return mList;
+    }
+
+    AdapterView.OnItemClickListener listener2 = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ListView lv = (ListView) parent;
+            lv.setSelector(R.color.purple_200); //设置高亮背景色 purple_200颜色值见原来项目
+            String musicName = parent.getItemAtPosition(position).toString(); //获得选中项图片名称，需要toString
+
+            if (musicName.equals("返回")) {
+                // 获取ListView的布局参数
+                listView.setVisibility(View.GONE);
+            } else {
+                playMusic(musicName);
+            }
+        }
+    };
+
+    public void playMusic(String musicName) {
+        updateSongName(musicName);
+        if (isServiceBound && musicService != null) {
+            timer = new Timer();
+            timer.schedule(new ProgressUpdate(), 0, 1000);
+            musicService.playMusic(musicName);
+            btn_play.setImageResource(R.drawable.pause);
+        }
+    }
+    // ListView 显示音乐列表 end
 
     public void playOrPauseMusic() {
         if (musicService.isPlaying()) {
@@ -156,25 +210,31 @@ public class MainActivity extends AppCompatActivity {
         if (isServiceBound && musicService != null) {
             timer = new Timer();
             timer.schedule(new ProgressUpdate(), 0, 1000);
-            btn_play .setImageResource(R.drawable.pause);
+            btn_play.setImageResource(R.drawable.pause);
             musicService.playNextTrack();
             String songName = musicService.getCurrentSongName();
             updateSongName(songName);
         }
     }
 
-    public void showListView() {
-        music_list = getMusic(); // 获取音乐列表
-        adpter = new ArrayAdapter<String>( // 创建适配器
-                MainActivity.this,
-                android.R.layout.simple_list_item_single_choice,
-                music_list
-        );
-        listView.setAdapter(adpter); // 设置适配器
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); // 设置选择模式
+    public void updateSongName(String songName) {
+        // 去掉文件名后缀
+        songName = songName.substring(0, songName.lastIndexOf("."));
+        tv_songName.setText(songName);
+    }
 
-        listView.setOnItemClickListener(listener2); // 设置监听器
-        listView.setVisibility(View.VISIBLE); // 设置可见
+    // 更换播放模式
+    private void changePlayMode() {
+        if (musicService != null) {
+            int currentMode = musicService.getPlayMode();
+            if (currentMode == Player.REPEAT_MODE_ALL) {
+                musicService.setPlayMode(Player.REPEAT_MODE_ONE); // 切换到单曲循环
+                btn_playWay.setImageResource(R.drawable.single_cycle); // 更新按钮图标
+            } else if (currentMode == Player.REPEAT_MODE_ONE) {
+                musicService.setPlayMode(Player.REPEAT_MODE_ALL); // 切换到顺序播放
+                btn_playWay.setImageResource(R.drawable.play_in_order); // 更新按钮图标
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -225,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                // SeekBar 的进度发生改变时触发的操作
                 if (fromUser) {
                     timer = new Timer();
                     timer.schedule(new ProgressUpdate(), 0, 1000);
@@ -236,79 +296,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                // 用户开始滑动 SeekBar 时触发的操作
                 btn_play.setImageResource(R.drawable.play);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // 用户停止滑动 SeekBar 时触发的操作
-                int progress = seekBar.getProgress();
-                musicService.seekTo(progress);
                 btn_play.setImageResource(R.drawable.pause);
                 updateSongName(musicService.getCurrentSongName());
                 musicService.play();
             }
         });
-    }
 
-    List<String> getMusic() {
-        List<String> mList = new ArrayList<>();
-        try {
-            String[] fNames = getAssets().list("music");
-            for (String fn : fNames) {
-                mList.add(fn);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        mList.add("返回");
-        return mList;
-    }
 
-    AdapterView.OnItemClickListener listener2 = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ListView lv = (ListView) parent;
-            lv.setSelector(R.color.purple_200); //设置高亮背景色 purple_200颜色值见原来项目
-            String musicName = parent.getItemAtPosition(position).toString(); //获得选中项图片名称，需要toString
-
-            if (musicName.equals("返回")) {
-                // 获取ListView的布局参数
-                listView.setVisibility(View.GONE);
-            } else {
-                playMusic(musicName);
-            }
-        }
-    };
-
-    public void playMusic(String musicName) {
-        updateSongName(musicName);
-        if (isServiceBound && musicService != null) {
-            timer = new Timer();
-            timer.schedule(new ProgressUpdate(), 0, 1000);
-            musicService.playMusic(musicName);
-            btn_play.setImageResource(R.drawable.pause);
-        }
-    }
-
-    public void updateSongName(String songName) {
-        // 去掉文件名后缀
-        songName = songName.substring(0, songName.lastIndexOf("."));
-        tv_songName.setText(songName);
-    }
-
-    // 更换播放模式
-    private void changePlayMode() {
-        if (musicService != null) {
-            int currentMode = musicService.getPlayMode();
-            if (currentMode == Player.REPEAT_MODE_ALL) {
-                musicService.setPlayMode(Player.REPEAT_MODE_ONE); // 切换到单曲循环
-                btn_playWay.setImageResource(R.drawable.single_cycle); // 更新按钮图标
-            } else if (currentMode == Player.REPEAT_MODE_ONE) {
-                musicService.setPlayMode(Player.REPEAT_MODE_ALL); // 切换到顺序播放
-                btn_playWay.setImageResource(R.drawable.play_in_order); // 更新按钮图标
-            }
-        }
     }
 
     @Override
@@ -330,7 +331,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         Intent intent = new Intent(MainActivity.this, MusicService.class);
-        intent.putExtra("data", "hello");
         bindService(intent, serviceConnection, BIND_AUTO_CREATE);
 
 
