@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constrainLayout"
@@ -22,7 +21,7 @@
         app:layout_constraintVertical_bias="0.778" />
 
     <ImageButton
-        android:id="@+id/btn_player"
+        android:id="@+id/btn_play"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginBottom="32dp"
@@ -35,11 +34,11 @@
         app:srcCompat="@drawable/play" />
 
     <TextView
-        android:id="@+id/seekBarHint"
+        android:id="@+id/tv_seekBarHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="0:27"
+        android:text="00:00"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.047"
@@ -47,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
     <TextView
-        android:id="@+id/duration"
+        android:id="@+id/tv_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -55,7 +54,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.907"
-        app:layout_constraintStart_toEndOf="@+id/seekBarHint"
+        app:layout_constraintStart_toEndOf="@+id/tv_seekBarHint"
         app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
     <ImageButton
@@ -67,7 +66,7 @@
         android:background="@color/white"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_player"
+        app:layout_constraintEnd_toStartOf="@+id/btn_play"
         app:srcCompat="@drawable/pre" />
 
     <ImageButton
@@ -80,13 +79,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.301"
-        app:layout_constraintStart_toEndOf="@+id/btn_player"
+        app:layout_constraintStart_toEndOf="@+id/btn_play"
         app:srcCompat="@drawable/next" />
 
     <ImageButton
         android:id="@+id/btn_playWay"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="48dp"
         android:background="@color/white"
         android:scaleType="fitCenter"
@@ -98,8 +97,8 @@
 
     <ImageButton
         android:id="@+id/btn_playList"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="48dp"
         android:background="@color/white"
         android:scaleType="fitCenter"
@@ -124,7 +123,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="488dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toStartOf="@+id/btn_point"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/comment" />
@@ -167,12 +166,12 @@
         android:layout_marginTop="316dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toEndOf="@+id/name"
+        app:layout_constraintStart_toEndOf="@+id/tv_songName"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/like" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/tv_songName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -196,7 +195,7 @@
         app:srcCompat="@drawable/picture" />
 
     <TextView
-        android:id="@+id/singer"
+        android:id="@+id/tv_singer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -204,10 +203,10 @@
         android:text="Singer"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_songName" />
 
     <TextView
-        android:id="@+id/lyrics"
+        android:id="@+id/tv_lyrics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -216,6 +215,18 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/singer" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_singer" />
+
+    <ListView
+        android:id="@+id/lv_music"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:background="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/picture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
